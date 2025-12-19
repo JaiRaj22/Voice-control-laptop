@@ -1,4 +1,4 @@
-# Voice Control for Your Laptop
+# Voice Control for windows
 
 Welcome! This is a simple application that lets you control your Windows computer using your voice. You can open programs, change the volume, and even shut down or restart your computer, all by speaking to it.
 
