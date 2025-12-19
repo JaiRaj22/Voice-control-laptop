@@ -2,3 +2,4 @@ SpeechRecognition
 pytest
 pyaudio
 pycaw
+pyinstaller

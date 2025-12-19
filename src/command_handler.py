@@ -2,10 +2,12 @@ import os
 import subprocess
 import sys
 import logging
+from app_finder import AppFinder
 
 class CommandHandler:
     def __init__(self, logger=None):
         self.logger = logger or logging.getLogger(__name__)
+        self.app_finder = AppFinder(logger=self.logger)
         self.commands = {
             "open": "open_application",
             "volume up": "volume_up",
@@ -15,11 +17,6 @@ class CommandHandler:
             "restart": "restart",
             "sleep": "sleep",
         }
-        self.app_paths = {
-            "firefox": r"C:\Program Files (x86)\Mozilla Firefox\firefox.exe",
-            "visual studio": r"D:\Microsoft VS Code\Code.exe",
-        }
-
         self._volume_interface = self._get_volume_interface()
 
     def _get_volume_interface(self):
@@ -38,14 +35,6 @@ class CommandHandler:
             return
 
         command_text = command_text.lower()
-        # Remove common wake words like 'hey windows' or leading 'hey'
-        if command_text.startswith("hey windows"):
-            command_text = command_text[len("hey windows"):].strip()
-        elif command_text.startswith("hey, windows"):
-            command_text = command_text[len("hey, windows"):].strip()
-        elif command_text.startswith("hey "):
-            command_text = command_text[len("hey "):].strip()
-
         for keyword, action in self.commands.items():
             if command_text.startswith(keyword):
                 if isinstance(action, str):
@@ -61,12 +50,13 @@ class CommandHandler:
                 return
 
     def open_application(self, app_name):
-        if app_name in self.app_paths:
+        app_path = self.app_finder.find_app(app_name)
+        if app_path:
             try:
-                subprocess.Popen(self.app_paths[app_name])
-                self.logger.info(f"Opening {app_name}")
-            except FileNotFoundError:
-                self.logger.error(f"Could not find {app_name}")
+                os.startfile(app_path)
+                self.logger.info(f"Opening {app_name} from {app_path}")
+            except Exception as e:
+                self.logger.error(f"Could not open '{app_name}': {e}")
         else:
             self.logger.warning(f"Application '{app_name}' not found.")
 
@@ -111,25 +101,6 @@ class CommandHandler:
         self.logger.info("Restarting...")
         os.system("shutdown /r /t 1")
 
-    def sleep(self, confirmation_callback=None):
-        """Put the system to sleep (cross-platform best-effort).
-
-        If a confirmation_callback is provided and returns False, the action is cancelled.
-        """
-        if confirmation_callback and not confirmation_callback():
-            self.logger.info("Sleep cancelled.")
-            return
-
-        self.logger.info("Sleeping...")
-        try:
-            if sys.platform == "win32":
-                # Best-effort Windows sleep command
-                os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
-            elif sys.platform.startswith("linux"):
-                os.system("systemctl suspend")
-            elif sys.platform == "darwin":
-                os.system("pmset sleepnow")
-            else:
-                self.logger.warning("Sleep is not supported on this OS.")
-        except Exception as e:
-            self.logger.error(f"Failed to put system to sleep: {e}")
+    def sleep(self):
+        self.logger.info("Putting the computer to sleep...")
+        os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
