@@ -2,17 +2,9 @@
 
 Welcome! This is a simple application that lets you control your Windows computer using your voice. You can open programs, change the volume, and even shut down or restart your computer, all by speaking to it.
 
-## For Everyone: How to Get Started
-
-Getting the application running is as simple as possible. You don't need to install anything!
-
-1.  **Find the Executable:** Look for the `dist` folder in the project files.
-2.  **Run the Application:** Inside the `dist` folder, you will find a single file named `VoiceControlApp.exe`. Just double-click it to start the application.
-3.  **Start Speaking:** A small window will appear with a real-time log. The application is now listening! The first time you run it, it may take a few extra seconds to start up and scan your computer for installed programs.
-
 ### How to Use the Application
 
-The application listens for a special wake word: **"hey system"**. You must say this first, followed by your command in the same sentence.
+The application listens for a special wake word: **"hey windows"**. You must say this first, followed by your command in the same sentence.
 
 Here are some examples of commands you can use:
 
