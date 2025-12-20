@@ -2,8 +2,6 @@
 
 Welcome! This is a simple application that lets you control your Windows computer using your voice. You can open programs, change the volume, and even shut down or restart your computer, all by speaking to it.
 
-![Application Screenshot](https://i.imgur.com/your-screenshot.png) <!-- Placeholder for a screenshot -->
-
 ## For Everyone: How to Get Started
 
 Getting the application running is as simple as possible. You don't need to install anything!
@@ -78,3 +76,5 @@ To package the application into a standalone `.exe` file, simply run the build s
 build.bat
 ```
 This script will handle creating a virtual environment, installing dependencies, and running PyInstaller. The final `VoiceControlApp.exe` file will be located in the `dist` directory.
+
+Download the latest application release here https://github.com/JaiRaj22/Voice-control-windows/releases
